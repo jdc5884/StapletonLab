@@ -13,4 +13,4 @@
 # Other commands must follow all #SBATCH directives...
 
 mkdir output
-#Rscript --vanilla --verbose ./DummyFile.R > ./output.Rout
+Rscript --vanilla --verbose ./DummyFile.R > ./output.Rout
