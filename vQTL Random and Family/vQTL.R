@@ -3,7 +3,7 @@
 library("vqtl")
 library("qtl")
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/vQTL Random and Family/data/tidied")
-family <-read.cross(file = "Family.csv")
+family <-read.cross("csv",file = "Family.csv")
 family <- drop.nullmarkers(family)
 #scan with variance
 outv <-scanonevar(family)
