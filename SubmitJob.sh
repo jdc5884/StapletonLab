@@ -13,4 +13,4 @@
 # Other commands must follow all #SBATCH directives...
 
 module load Rstats # Load the R module along with some popular packages so it will run R files
-Rscript DummyFile.R
+Rscript --verbose ./DummyFile.R > ./output.Rout
