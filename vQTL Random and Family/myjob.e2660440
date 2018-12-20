@@ -1,0 +1,27 @@
+running
+  '/opt/apps/intel17/impi17_0/Rstats/3.4.0/lib64/R/bin/R --slave --no-restore --file=./vQTL.R'
+
+
+Attaching package: ‘qtl’
+
+The following object is masked from ‘package:vqtl’:
+
+    scanonevar
+
+Warning messages:
+1: In if (format == "csvrs") { :
+  the condition has length > 1 and only the first element will be used
+2: In read.cross.csv(dir, file, na.strings, genotypes, estimate.map,  :
+  The following unexpected genotype codes were treated as missing.
+    |?|
+
+3: In summary.cross(cross) : Strange genotype pattern.
+4: In summary.cross(cross) :
+  Some chromosomes > 1000 cM in length; there may be a problem with the genetic map.
+  (Perhaps it is in basepairs?)
+Warning message:
+In scanonevar(family) : First running calc.genoprob
+Error in base::library(package = package, pos = pos, lib.loc = lib.loc,  : 
+  there is no package called ‘qqman’
+Calls: library -> <Anonymous>
+Execution halted
