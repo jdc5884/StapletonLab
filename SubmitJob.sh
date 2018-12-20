@@ -7,10 +7,10 @@
 #SBATCH -n 1               # Total # of mpi tasks (should be 1 for serial)
 #SBATCH -t 48:00:00        # Run time (hh:mm:ss)
 #SBATCH --mail-user=jdc5884@uncw.edu
-#SBATCH --mail-type=all    # Send email at begin and end of job
+#SBATCH --mail-type=end    # Send email at begin and end of job
 
 
 # Other commands must follow all #SBATCH directives...
 
-mkdir output
-Rscript --vanilla --verbose ./DummyFile.R > ./output.Rout
+module load Rstats # Load the R module along with some popular packages so it will run R files
+Rscript DummyFile.R
