@@ -1,8 +1,9 @@
-install.packages("vqtl")
-install.packages("qtl")
+#install.packages("vqtl")
+#install.packages("qtl")
 library("vqtl")
 library("qtl")
-family <-read.cross(dir = "~/PCR\ data/", file = "Family.csv")
+#setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/vQTL Random and Family/data/tidied")
+family <-read.cross(file = "Family.csv")
 family <- drop.nullmarkers(family)
 #scan with variance
 outv <-scanonevar(family)
