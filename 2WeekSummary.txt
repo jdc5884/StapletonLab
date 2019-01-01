@@ -1,0 +1,15 @@
+Over the past two/three weeks since starting I have learned and worked on:
+
+Creating various accounts and connecting to the team:
+ -learning how to use GitHub, how to pull, fork, commit, and push
+ -learning how to use Stampede2 through git bash and how to update GitHub through it
+ -going through unix tutorials
+
+Familiarizing myself with the vQTL package and how it works
+ -reading various supporting material
+ -looking at Thomas's previous code for Random Family vQTL
+
+Learning about Hyperspectral imaging through the materials provided by David
+ -cloning his repo and exploring the files
+
+Understanding the data structure of the splicing ratio qPCR and vQTL analysis  
