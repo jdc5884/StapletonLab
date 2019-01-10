@@ -1,19 +1,24 @@
 ### Combining Genomes and Mo### 
+library(stringr)
 
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
-dat = read.csv(file = "Plant_Height.csv")
-dat = dat[,-(4:5)]
+dat = read.csv(file = "Plant_Height.csv", header = TRUE)
+#take out IBMB### , NA, B73
+dat = dat[-(907:938),-(4:5)]
+#create Categorical Variables for PH207*Mo###
+BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
+dat = cbind(dat, BreedType)
+
+
 #####Need to add in SNP info#####
 snp = read.csv(file = "IBM94markerset08seq.csv")
 snp = snp[,-(1:5)]
 #snpT = t(snp)
 
-
-
 relevant = data.frame(matrix(rep(0,length(dat$Genotype)*dim(snp)[1]), ncol = dim(snp)[1]))
-dat2 = sapply(dat$Genotype, function(x){
-  substr(x,2,2) = "O"
-  column = which(colnames(snp) == x)
+dat2 = sapply(str_sub(dat$Genotype,-3,-1), function(x){
+  #substr(x,2,2) = "O"
+  column = which(str_sub(colnames(snp),-3,-1) == x)
   vect = data.frame(as.character(snp[,column]))
   return(vect)
 })
