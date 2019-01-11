@@ -16,6 +16,7 @@ snp = snp[,-(1:5)]
 #snpT = t(snp)
 
 relevant = data.frame(matrix(rep(0,length(dat$Genotype)*dim(snp)[1]), ncol = dim(snp)[1]))
+
 dat2 = sapply(str_sub(dat$Genotype,-3,-1), function(x){
   #substr(x,2,2) = "O"
   column = which(str_sub(colnames(snp),-3,-1) == x)
