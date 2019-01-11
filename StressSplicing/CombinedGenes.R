@@ -3,31 +3,37 @@ library(stringr)
 
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
 dat = read.csv(file = "Plant_Height.csv", header = TRUE)
-#take out IBMB### , NA, B73
+
+#Take out unneeded IBMB###, NA, B73 loci
 dat = dat[-(907:938),-(4:5)]
-#create Categorical Variables for PH207*Mo###
+
+#Create Categorical Variables for PH207*Mo### and Mo### by gene breed
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
 dat = cbind(dat, BreedType)
 
-
-#####Need to add in SNP info#####
+#Add in SNP info from Marker data CSV, beginning with column six
 snp = read.csv(file = "IBM94markerset08seq.csv")
 snp = snp[,-(1:5)]
-#snpT = t(snp)
 
+#Create zero matrix to which data will input
 relevant = data.frame(matrix(rep(0,length(dat$Genotype)*dim(snp)[1]), ncol = dim(snp)[1]))
 
+#From "Genotype" values, match Plant Height data and Marker data by detecting last three digits of Mo###'s
 dat2 = sapply(str_sub(dat$Genotype,-3,-1), function(x){
-  #substr(x,2,2) = "O"
   column = which(str_sub(colnames(snp),-3,-1) == x)
   vect = data.frame(as.character(snp[,column]))
   return(vect)
 })
+
+#Add matched Mo### values to data frame 
 dat2 = as.data.frame(matrix(unlist(dat2), nrow = dim(dat)[1], byrow = TRUE))
+
+#Running into errors beginning with colnames(dat2)#
 colnames(dat2) = colnames()
 library(beepr)
 beep()
 dim(dat3);dim(snp)
+
 #####Adding back in the Trait info#####
 dat3 = cbind(dat2$Height,dat2[,1:3],dat3)
 colnames(dat3) = c(colnames(dat2[1:3]),"Height",as.character(snp$markername))
