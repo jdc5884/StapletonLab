@@ -1,11 +1,11 @@
-install.packages("vqtl")
-install.packages("qtl")
+#install.packages("vqtl")
+#install.packages("qtl")
 library("qtl")
 library("vqtl")
 library("dplyr")
 #we also got rid of "(" in SNP ID rz44bd and rz574bc
 #now with the RandFam dataset
-RandFam <-read.cross(file = "C:/Users/twili/Desktop/GIThub/StapletonLab/vQTL Random and RandFam/familyrandomsampleJ.csv")
+RandFam <-read.cross(file = "familyrandomsampleJ.csv")
 RandFam <- drop.nullmarkers(RandFam)
 #scan with variance
 RandFam <- calc.genoprob(RandFam)
