@@ -1,11 +1,13 @@
 ### Combining Genomes and Mo### 
 library(stringr)
+library(tidyverse)
 
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
 dat = read.csv(file = "Plant_Height.csv", header = TRUE)
 
 #Take out unneeded IBMB###, NA, B73 loci
-dat = dat[-(907:938),-(4:5)]
+dat = dat[-(907:938),-5]
+dat = dat %>% filter(str_detect(dat$Height..in.., "N") == FALSE)
 
 #Create Categorical Variables for PH207*Mo### and Mo### by gene breed
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
@@ -31,7 +33,7 @@ dat2 = sapply(str_sub(dat$Genotype,-3,-1), function(x){
 dat2 = as.data.frame(matrix(unlist(dat2), nrow = dim(dat)[1], byrow = TRUE))
 
 #testing dat 2
-Samp = dat[1:10,]
+Samp = dat[1:33,]
 SampDat = sapply(str_sub(Samp$Genotype,-3,-1), function(x){
   column = which(str_sub(colnames(snp),-3,-1) == x)
   vect = data.frame(as.character(snp[,column]))
@@ -39,6 +41,7 @@ SampDat = sapply(str_sub(Samp$Genotype,-3,-1), function(x){
 })
 
 SampDat = as.data.frame(matrix(unlist(SampDat), nrow = dim(Samp)[1], byrow = TRUE))
+SampDat = cbind(Samp$Genotype, SampDat)
 #####################################################################################
 
 
@@ -51,8 +54,8 @@ beep()
 dim(dat2);dim(snp)
 
 #####Adding back in the Trait info#####
-dat2 = cbind(dat$Height,dat[,1:3],dat2)
-colnames(dat2) = c(colnames(dat[1:3]),"Height",as.character(snp$markername))
+dat2 = cbind(dat$Height,dat[,1:4],dat2)
+colnames(dat2) = c(colnames(dat[1:4]),"Height",as.character(snp$markername))
 dat2[1:10,1:10]
 
 
