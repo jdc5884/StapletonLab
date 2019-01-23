@@ -1,0 +1,14 @@
+#Weekly Summary for  Jan 14-20
+
+Researching vQTL package:
+	-reading chapter 7 and understanding how to do covariate analysis using vQTL
+	-finding out how to properly analyze and compare the pvalues and finding the significance
+
+Formatting and organizing qPCR data:
+	-helped Drew separate the calibration from the experimental data in the pQCR data
+	-working on code to match the height data with the genotypes
+
+Organizing Files:
+	-learned how to refresh and sync forked repos
+	-Forked important repos from my project members.
+	-Organized my files within my Github
