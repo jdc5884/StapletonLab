@@ -6,8 +6,8 @@ library(tidyverse)
 dat = read.csv(file = "Plant_Height.csv", header = TRUE)
 
 #Take out unneeded IBMB###, NA, B73 loci
-dat = dat[-(907:938),-5]
 dat = dat %>% filter(str_detect(dat$Height..in.., "N") == FALSE)
+dat = dat %>% filter(str_detect(dat$Genotype, "B") == FALSE)
 
 #Create Categorical Variables for PH207*Mo### and Mo### by gene breed
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
@@ -17,35 +17,28 @@ dat = cbind(dat, BreedType)
 snp = read.csv(file = "IBM94markerset08seq.csv", header = TRUE)
 snp = snp[,-(1:5)]
 
-#issues arise in assigning genotypes
-#####################################################################################
-#Create zero matrix to which data will input
-#relevant = data.frame(matrix(rep(0,length(dat$Genotype)*dim(snp)[1]), ncol = dim(snp)[1]))
+### Assigning Genotypes to Mo###
+### Austin's code ###
+library(data.table)
+substrRight <- function(x, n){
+  substr(x, nchar(x)-n+1, nchar(x))
+}
 
-#From "Genotype" values, match Plant Height data and Marker data by detecting last three digits of Mo###'s
+dat.num = substrRight(as.character(dat$Genotype), 3) # Leaves out begining 0 for Mo010 and Mo039 
+snp.num = substrRight(as.character(colnames(snp)), 3)
 
-dat2 = sapply(str_sub(dat$Genotype,-3,-1), function(x){
-  column = which(str_sub(colnames(snp),-3,-1) == x)
-  vect = data.frame(as.character(snp[,column]))
-  return(vect)
-})
-#Add matched Mo### values to data frame 
-dat2 = as.data.frame(matrix(unlist(dat2), nrow = dim(dat)[1], byrow = TRUE))
+snp.new = data.frame(lapply(snp,as.character),stringsAsFactors=FALSE)
+snpMatch = rbind(snp.num,snp.new)
+snpMatch = transpose(snpMatch)
+# creating matching Genotype columns to merge the data
+colnames(snpMatch) = c("Genotype")
+MoNum = cbind(dat.num)
+colnames(MoNum) = c("Genotype")
+dat2 = merge(MoNum,snpMatch,by = "Genotype") ### issue: the dim of dat2 should = MoNum when it is merged with the Genotypes (1527-1437)
+head(dat2[,1:10],20)
+# this code puts in extra Mo### values when merging the two sets
 
-#testing dat 2
-Samp = dat[1:33,]
-SampDat = sapply(str_sub(Samp$Genotype,-3,-1), function(x){
-  column = which(str_sub(colnames(snp),-3,-1) == x)
-  vect = data.frame(as.character(snp[,column]))
-  return(vect)
-})
-
-SampDat = as.data.frame(matrix(unlist(SampDat), nrow = dim(Samp)[1], byrow = TRUE))
-SampDat = cbind(Samp$Genotype, SampDat)
-#####################################################################################
-
-
-
+### end Austin's code ###
 
 #Running into errors beginning with colnames(dat2)#
 colnames = colnames(dat2)
