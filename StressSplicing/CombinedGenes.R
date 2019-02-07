@@ -1,33 +1,31 @@
 ### Combining Genomes and Mo### 
 library(stringr)
 library(tidyverse)
+library(dplyr)
 
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
-dat = read.csv(file = "Plant_Height.csv", header = TRUE)
+dat = read.csv(file = "Plant_Height_Update.csv", header = TRUE)
 
 #Take out unneeded IBMB###, NA, B73 loci
 dat = dat %>% filter(str_detect(dat$Height..in.., "N") == FALSE)
 dat = dat %>% filter(str_detect(dat$Genotype, "B") == FALSE)
 dat$Genotype = str_remove(dat$Genotype, " ") #removes any empty space in Mo###
-dat = dat %>% filter(str_detect(dat$Genotype, "Mo062") == FALSE)
-dat = dat %>% filter(str_detect(dat$Genotype, "Mo066") == FALSE)
-dat = dat %>% filter(str_detect(dat$Genotype, "Mo075") == FALSE)
 
 #Create Categorical Variables for PH207*Mo### and Mo### by gene breed
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
 dat = cbind(dat, BreedType)
 
 #Add in SNP info from Marker data CSV, beginning with column six
-snp = read.csv(file = "IBM94markerset08seq.csv", header = TRUE)
-snp = snp[,-(1:5)]
+snpFull = read.csv(file = "IBM94markerset08seq.csv", header = TRUE)
+snp = snpFull[,-(1:5)]
 
 ### Assigning Genotypes to Mo###
-### Austin's code ###
 library(data.table)
+#function takes the last three values of a string
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
-
+#creating datasets exclusively containing the last three numbers 
 dat.num = substrRight(as.character(dat$Genotype), 3)
 snp.num = substrRight(as.character(colnames(snp)), 3)
 
@@ -38,45 +36,25 @@ snpMatch = transpose(snpMatch)
 colnames(snpMatch) = c("Genotype")
 MoNum = cbind(dat.num)
 colnames(MoNum) = c("Genotype")
-dat2 = merge(MoNum,snpMatch,by = "Genotype") ### issue: the dim of dat2 should = MoNum when it is merged with the Genotypes (1527-1437)
-head(dat2,20)
+dat2 = merge(MoNum,snpMatch,by = "Genotype")
+dat2[,1:10]
+dat2 = dat2[,-1]
+#combine with the full data description
+dat2 = cbind(dat, dat2)
 write.csv(dat2, "dat2.csv")
-### end Austin's code ###
-#install.packages("pracma")
-library("pracma")
-for (i in 1:50){
-  if (!strcmp(MoNum[i], dat2$Genotype[i])) {
-    print(i)
-    print(dat2$Genotype[i])
-    print(MoNum[i])
-  }
-}
-
-
-#Running into errors beginning with colnames(dat2)#
-colnames = colnames(dat2)
-library(beepr)
-beep()
-dim(dat2);dim(snp)
-
-#####Adding back in the Trait info#####
-dat2 = cbind(dat$Height,dat[,1:4],dat2)
-colnames(dat2) = c(colnames(dat[1:4]),"Height",as.character(snp$markername))
-dat2[1:10,1:10]
-
 
 
 
 ## Issues here ##
 #####################################################################################
 #####Adding marker location and chromosome#####
-aux = matrix(snp$incre_new, nrow= 1)
-aux = rbind(aux,snp$Chromosome)
+aux = matrix(snpFull$incre_new, nrow= 1)
+aux = rbind(aux,snpFull$Chromosome)
 other = as.data.frame(matrix(rep(0,8), nrow = 2))
 aux = cbind(other,aux)
 colnames(aux) = rep("",3239)
 colnames(dat2) = rep("",3239)
-dat3 = rbind(aux,dat2)
+dat3 = rbind(aux,dat2) #dimentions do not match to bind both dataframes
 colnames(dat3) = c("Height", colnames(dat2[1:3]),as.character(snp$markername))
 dat3[1:10,1:10]
 write.csv(dat3, file = ,
