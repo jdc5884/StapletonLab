@@ -8,6 +8,10 @@ dat = read.csv(file = "Plant_Height.csv", header = TRUE)
 #Take out unneeded IBMB###, NA, B73 loci
 dat = dat %>% filter(str_detect(dat$Height..in.., "N") == FALSE)
 dat = dat %>% filter(str_detect(dat$Genotype, "B") == FALSE)
+dat$Genotype = str_remove(dat$Genotype, " ") #removes any empty space in Mo###
+dat = dat %>% filter(str_detect(dat$Genotype, "Mo062") == FALSE)
+dat = dat %>% filter(str_detect(dat$Genotype, "Mo066") == FALSE)
+dat = dat %>% filter(str_detect(dat$Genotype, "Mo075") == FALSE)
 
 #Create Categorical Variables for PH207*Mo### and Mo### by gene breed
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
@@ -24,7 +28,7 @@ substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
 
-dat.num = substrRight(as.character(dat$Genotype), 3) # Leaves out begining 0 for Mo010 and Mo039 
+dat.num = substrRight(as.character(dat$Genotype), 3)
 snp.num = substrRight(as.character(colnames(snp)), 3)
 
 snp.new = data.frame(lapply(snp,as.character),stringsAsFactors=FALSE)
@@ -35,10 +39,19 @@ colnames(snpMatch) = c("Genotype")
 MoNum = cbind(dat.num)
 colnames(MoNum) = c("Genotype")
 dat2 = merge(MoNum,snpMatch,by = "Genotype") ### issue: the dim of dat2 should = MoNum when it is merged with the Genotypes (1527-1437)
-head(dat2[,1:10],20)
-# this code puts in extra Mo### values when merging the two sets
-
+head(dat2,20)
+write.csv(dat2, "dat2.csv")
 ### end Austin's code ###
+#install.packages("pracma")
+library("pracma")
+for (i in 1:50){
+  if (!strcmp(MoNum[i], dat2$Genotype[i])) {
+    print(i)
+    print(dat2$Genotype[i])
+    print(MoNum[i])
+  }
+}
+
 
 #Running into errors beginning with colnames(dat2)#
 colnames = colnames(dat2)
