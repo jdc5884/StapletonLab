@@ -1,0 +1,25 @@
+#Summary for Jan 21- Feb 8
+
+Achievements:
+
+Completed the CITI Program training
+
+Stress Splicing:
+	-worked on and managed to successfully add the genetic markers to the 
+	 height data and their corresponding Mo###
+	-researched and learned about the process of qPCR and how it fits into
+	 the bigger picture of the splicing project
+	-Our team has separated the 2018_6_1 data by calibration and experimental
+
+HSI:
+	-worked through numpy tutorials
+	-downloaded pycharm
+
+
+Goals for the next two weeks:
+	-become more involved and contribute more to the family random project
+		-work on coding and helping Jessica solve problems that arise
+	-run the vQTL analysis on the height data and learn how it fits in
+	 with the rest of the splicing project
+	-meet or converse with David to see how I can start and contribute to 
+	 his project
