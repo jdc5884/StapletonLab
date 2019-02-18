@@ -44,20 +44,21 @@ dat2 = cbind(dat, dat2)
 write.csv(dat2, "dat2.csv")
 
 
-
-## Issues here ##
 #####################################################################################
 #####Adding marker location and chromosome#####
 aux = matrix(snpFull$incre_new, nrow= 1)
 aux = rbind(aux,snpFull$Chromosome)
-other = as.data.frame(matrix(rep(0,8), nrow = 2))
+other = as.data.frame(matrix(rep(0,12), nrow = 2))
 aux = cbind(other,aux)
-colnames(aux) = rep("",3239)
-colnames(dat2) = rep("",3239)
-dat3 = rbind(aux,dat2) #dimentions do not match to bind both dataframes
-colnames(dat3) = c("Height", colnames(dat2[1:3]),as.character(snp$markername))
+colnames(aux) = rep("",3241)
+colnames(dat2) = rep("",3241)
+dat3 = rbind(aux,dat2)
+colnames(dat3) = c("AES", "Genotype", "Height", "Ear Angle", "Notes","BreedType", as.character(snpFull$markername))
 dat3[1:10,1:10]
-write.csv(dat3, file = ,
+write.csv(dat3, file = "snpHeight.csv" ,
           row.names = FALSE)
 beep()
 #####MAKE SURE TO DELETE THE EXTRA ZEROS IN [1:2,1:4] IN EXCEL AFTERWARDS#####
+
+
+
