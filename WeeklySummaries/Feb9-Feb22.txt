@@ -1,0 +1,32 @@
+#Summary for Feb 9 - Feb 22
+
+Achievements:
+
+Stress Splicing:
+
+	-completed the data cleaning and organization for the height data from the
+	 metadata file
+
+	-Created graphs displaying the differences between the inbred heights and
+	 hybrid heights. The graphs show a prominet separation between the two and
+	 indicate that breedtype is an important covariate in our vQTL analysis.
+
+	-Worked with Drew on visualizing the calibration and experimental data
+	 gained an better understanding of how the starting quanitites and the 
+	 test_1 data relates to each other. 
+
+HSI:
+
+	-Set up pycharm
+
+	-Discussed the ideas David has on how to approach the problem
+	 we must begin by separating and organizing the data for better analysis
+
+Goals for the next two weeks:
+
+	- Work with Jessica on her project and understanding how to run the vQTL
+	 analysis. Now that our projects are now dealing with the same issue of 
+	 vQTL, it will be easier to discuss and meet about the issues at hand.
+	- Begin to work on the data organization for the HSI project. Write robust
+	 code for the organization.
+	
