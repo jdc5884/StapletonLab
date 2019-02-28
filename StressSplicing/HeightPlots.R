@@ -54,3 +54,7 @@ legend("topleft",
 
 
 #comparative box plot
+values = merge(inbred, outbred, by = "")
+
+
+
