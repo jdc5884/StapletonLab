@@ -38,23 +38,6 @@ datnames =names(dat.num)[-7]
 colnames(dat.num) = c(datnames,"GenotypeNum")
 dat2 = merge(dat.num,snpMatch, by.x = "GenotypeNum", by.y = "GenotypeNum",all.MoNum = all)
 dat2 = dat2[order(dat2$Genotype, decreasing = FALSE),]
-
-
-
-## Merge brings issues to the GenotypeNum, consecutive inc num
-dat2[31:50,1:10]
-unique(dat2$GenotypeNum[700:800]) #large gap b/t GenotypeNum, merge is ordering the mo###???
-unique(MoNum)[41:47]
-test = cbind(MoNum, dat2)
-test[31:50,1:2]
-#dat2 = dat2[,-1]
-check = cbind(head(MoNum,20), head(dat2$GenotypeNum,20))
-
-
-
-#combine with the full data description
-dat2 = cbind(dat, dat2)
-dat2[31:50, 1:10] ### labeling issues here between original Genotype and  obs 35-43
 write.csv(dat2, "dat2.csv")
 
 
