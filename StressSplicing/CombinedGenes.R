@@ -38,6 +38,7 @@ datnames =names(dat.num)[-7]
 colnames(dat.num) = c(datnames,"GenotypeNum")
 dat2 = merge(dat.num,snpMatch, by.x = "GenotypeNum", by.y = "GenotypeNum",all.MoNum = all)
 dat2 = dat2[order(dat2$Genotype, decreasing = FALSE),]
+dat2 = dat2[,-1]
 write.csv(dat2, "dat2.csv")
 
 
@@ -54,7 +55,6 @@ colnames(dat3) = c("AES", "Genotype", "Height", "Ear Angle", "Notes","BreedType"
 dat3[1:10,1:10]
 write.csv(dat3, file = "snpHeight.csv" ,
           row.names = FALSE)
-beep()
 #####MAKE SURE TO DELETE THE EXTRA ZEROS IN [1:2,1:4] IN EXCEL AFTERWARDS#####
 
 
