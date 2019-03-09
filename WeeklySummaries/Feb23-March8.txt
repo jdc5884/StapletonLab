@@ -1,0 +1,21 @@
+#Summary for Feb 23 - March 8
+
+Achievements:
+
+Stress Splicing/vQTL Analysis:
+
+	-fixed the data cleaning and organization for the height data from the
+	 metadata file
+
+	-began looking into the vqtl analysis of the height data.
+		-read into the updated qtl package and Corty's vqtl package
+		-worked through some qtl tutorials on r/qtl.org 
+		-worked with Jessica on reproducing the mouse data
+
+Goals for the next two weeks:
+	-research behind the theory of QTL analysis
+	-understand how the pvalues are obtained from the QTL analysis
+	-Work out the syntax for the vqtl analysis
+	-Touch base with David on HSI project
+	-download additional HSI packages and components to run the programs
+	
