@@ -6,6 +6,8 @@ library("dplyr")
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
 #now with the breed dataset
 breed <-read.cross(file = "snpHeight.csv")
+#small sample of snpHeight
+breed = read.cross(file = "snpHeightTest.csv")
 breed <- drop.nullmarkers(breed)
 #scan with variance
 breed <- calc.genoprob(breed)
