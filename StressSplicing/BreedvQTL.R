@@ -3,13 +3,14 @@
 library("qtl")
 library("vqtl")
 library("dplyr")
+library("stringr")
+#library(beepr)
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
 #now with the breed dataset
 breed <-read.cross(file = "snpHeight.csv")
 #####small sample of snpHeight
 #####breed = read.cross(file = "snpHeightTest.csv")
 breed <- drop.nullmarkers(breed)
-
 
 ##### CORTY code #####
 breed$pheno$BreedType = factor(breed$pheno$BreedType)
@@ -22,16 +23,16 @@ breed$pheno$BreedType = factor(breed$pheno$BreedType)
 
 breed <- calc.genoprob(breed)
 
-#library(beepr)
+
 outv <- scanonevar(cross = breed,
                    mean.formula = Height ~ BreedType + mean.QTL.add + mean.QTL.dom,
                    var.formula = ~ BreedType + var.QTL.add + var.QTL.dom,
                    return.covar.effects = TRUE)
 #beep()
 
-outv$result %>% glimpse()
+#outv$result %>% glimpse()
 
-write.csv(outv$result, file = "2019_03_15_Breed_Output.csv")
+write.csv(outv$result, file = "Breed_Output.csv")
 
 #### END CORTY's Code #####
 

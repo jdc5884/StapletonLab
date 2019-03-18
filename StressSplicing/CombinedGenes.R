@@ -12,7 +12,7 @@ dat = dat %>% filter(str_detect(dat$Genotype, "B") == FALSE)
 dat$Genotype = str_remove(dat$Genotype, " ") #removes any empty space in Mo###
 
 #Create Categorical Variables for PH207*Mo### and Mo### by gene breed
-BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Outbred")
+BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Hybrid")
 dat = cbind(dat, BreedType)
 
 #Add in SNP info from Marker data CSV, beginning with column six
@@ -56,6 +56,4 @@ dat3[1:10,1:10]
 write.csv(dat3, file = "snpHeight.csv" ,
           row.names = FALSE)
 #####MAKE SURE TO DELETE THE EXTRA ZEROS IN [1:2,1:4] IN EXCEL AFTERWARDS#####
-
-
 
