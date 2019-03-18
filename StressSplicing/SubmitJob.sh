@@ -18,5 +18,5 @@
 
 # Other commands must follow all 
 
-#SBATCH directives...
-Rscript --verbose ./BreedvQTL.R > ./output.Rout
+mkdir output
+Rscript --vanilla --verbose ./BreedvQTL.R > ./output.Rout

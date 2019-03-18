@@ -34,7 +34,7 @@ breed <- calc.genoprob(breed)
 # 
 # write.csv(outv$result, file = "AdditiveModelBreed_Output.csv")
 
-outv <- scanonevar(cross = sample,
+outv <- scanonevar(cross = breed,
                    mean.formula = Height ~ BreedType * (mean.QTL.add + mean.QTL.dom),
                    var.formula = ~ BreedType * (var.QTL.add + var.QTL.dom),
                    return.covar.effects = TRUE)
