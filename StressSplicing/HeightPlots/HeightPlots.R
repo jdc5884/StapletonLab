@@ -62,4 +62,10 @@ boxplot(split(dat$Height..in.., dat$BreedType), xlab = "BreedType", ylab="Plant 
 summary(inbred$Height..in..)
 summary(hybrid$Height..in..)
 
+### Creating sample snpHeights ###
+dat = read.csv(file = "snpHeight.csv", header = TRUE)
 
+
+sampSnpHeight = dat[c(1:120, 896:986), 1:100]
+
+write.csv(sampSnpHeight, file = "sampSnpHeight.csv")
