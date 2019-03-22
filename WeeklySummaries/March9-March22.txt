@@ -1,0 +1,22 @@
+#Summary for March 9 - March 22
+
+Achievements:
+
+   Stress Splicing/vQTL Analysis:
+	-from Jessica's email to Corty, I have ran his code on the breed/height 
+	 data and produced the needed p-values for a subset of the data
+	-Consulted with Drew and drew up a flow chart of how to procede with this
+	 project given the endgoal of running a vQTL analysis of the qPCR adjusted
+	 ratios
+
+   Hyperspectral Imaging:
+	-David has helped with progressing my understanding of this project
+	-Discussed ways to simulate new data and train a model on the images
+
+Goals for the Next Two Weeks:
+	-Run a vQTL analysis on the entire breed/height data through Stampede
+	-Add SNP values to the Sampling Plan data
+	-Attach the qPCR data to the Sampling Plan and SNP values using the
+	 barcode/sampleID
+
+	-Begin some type of code/simulation for the HSI project

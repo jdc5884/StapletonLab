@@ -1,35 +1,31 @@
-x = c(2,6,16,24,28,29,69,40,33,100,99,69,45,4,8,69,69,15,12,1,21,5,4,8,115,04,5,2)
-hist(x)
-student =c("Jessica", "Julia", "Drew", "Michael")
-grades =c(75,80,85,90,95,100)
-sNum =c("1", "2", "3", "4")
-SGNumb =c("1", "4", "2", "3", "4")
-studentInfo = cbind(student, sNum)
-colnames(studentInfo) =c("StudentName", "StudentNumber")
-studentGrade = cbind(SGNumb, grades)
-colnames(studentGrade) =c("StudentNumber", "Grade")
-grades =c(75,80,85,90,95)
-studentGrade = cbind(SGNumb, grades)
-colnames(studentGrade) =c("StudentNumber", "Grade")
-merge(studentInfo, studentGrade, by = "StudentNumber")
+### Sample plan data cleaning ###
 library(stringr)
 library(tidyverse)
 library(dplyr)
+
+#setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
+
 dat = read.csv(file = "SamplingPlan.csv", header = TRUE)
-setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
-dat = read.csv(file = "SamplingPlan.csv", header = TRUE)
+
 dat = dat %>% filter(str_detect(dat$Genotype, "Mo") == TRUE)
+
 BreedType = ifelse(substr(dat$Genotype, 1,1)=="M", "Inbred", "Hybrid")
 dat = cbind(BreedType, dat)
-View(dat)
+
+
+snpFull = read.csv(file = "IBM94markerset08seq.csv", header = TRUE)
+snp = snpFull[,-(1:5)]
+
+
 library(data.table)
 #function takes the last three values of a string
 substrRight <- function(x, n){
-substr(x, nchar(x)-n+1, nchar(x))
+  substr(x, nchar(x)-n+1, nchar(x))
 }
-#creating datasets exclusively containing the last three numbers
+#creating datasets exclusively containing the last three numbers 
 dat.num =cbind(dat, as.integer(substrRight(as.character(dat$Genotype), 3)))
 snp.num = as.integer(substrRight(as.character(colnames(snp)), 3))
+
 snp.new = data.frame(lapply(snp,as.character),stringsAsFactors=FALSE)
 snpMatch = rbind(snp.num,snp.new)
 snpMatch = transpose(snpMatch)
@@ -41,5 +37,6 @@ dat2 = merge(dat.num,snpMatch, by.x = "GenotypeNum", by.y = "GenotypeNum",all.Mo
 dat2 = dat2[order(dat2$Genotype, decreasing = FALSE),]
 dat2 = dat2[,-1]
 write.csv(dat2, "SamplingPlan_dat2.csv")
-#creating datasets exclusively containing the last three numbers
-dat.num =cbind(dat, as.integer(substrRight(as.character(dat$Genotype), 3)))
+
+
+
