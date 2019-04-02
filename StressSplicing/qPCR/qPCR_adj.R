@@ -62,7 +62,7 @@ calib_df = deriv %>% filter(str_detect(sampleID, "g"))
 calib_df = calib_df[order(calib_df$starting_quantity),]
 calib_df$starting_quantity = as.numeric(as.character(calib_df$starting_quantity))
 calib_df$cpD1 = as.numeric(as.character(calib_df$cpD1))
-#calib_data = calib_df    Do we need this?
+
 
 
 # Create empty vectors for for-loop to input cpD1 values
@@ -94,12 +94,16 @@ calib_data$startq=as.factor(calib_data$startq)
 ########################################################## 
 ##### Ordinal Logicistic Regression Calibrated Data ######
 ##########################################################
-require(MASS)
+library(MASS)
 
 #ordinal logistic
 OLR = polr(startq~test1+allP,data = calib_data, Hess = TRUE)
 summary(OLR)
 (ctable <- coef(summary(OLR)))
+
+#logistic
+glm.fit = glm(startq~test1+allP, data = calib_data, family = "binomial")
+summary(glm.fit)
 ########################################################## 
 ############ ADJUSTMENT MODEL Calibrated Data ############
 ########################################################## 
