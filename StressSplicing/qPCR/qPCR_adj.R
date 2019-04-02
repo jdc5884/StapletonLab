@@ -8,7 +8,7 @@ library(dplyr)
 #setwd("~/Stapleton_Lab/Stapleton_Lab/Stress_Splicing/2018_11")
 #setwd("~/Stapleton_Lab/Stapleton_Lab/Stress_Splicing/2018_(MONTH)")
 # PC Directory
-#setwd(~/Desktop/GIThub/StapletonLab/StressSplicing/qPCR/)
+#setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing/qPCR")
 
 ### READ IN DERIVATIVE DATA###
 # In the case of having two separate CSV files of calculated derivatives,
@@ -62,7 +62,7 @@ calib_df = deriv %>% filter(str_detect(sampleID, "g"))
 calib_df = calib_df[order(calib_df$starting_quantity),]
 calib_df$starting_quantity = as.numeric(as.character(calib_df$starting_quantity))
 calib_df$cpD1 = as.numeric(as.character(calib_df$cpD1))
-calib_data = calib_df
+#calib_data = calib_df    Do we need this?
 
 
 # Create empty vectors for for-loop to input cpD1 values
@@ -70,26 +70,36 @@ test1 = c()
 allP = c()
 startq = c()
 # For loop -- iterating thru starting quantity and reaction type to return cpD1 values 
-for(i in 1:length(calib_data$starting_quantity)){
-  sq <- calib_data$starting_quantity[i]
+for(i in 1:length(calib_df$starting_quantity)){
+  sq <- calib_df$starting_quantity[i]
   if(i %% 6 == 1){
     startq = c(startq,sq,sq,sq)
   }
-  val <- toString(calib_data$reaction_type[i])
+  val <- toString(calib_df$reaction_type[i])
   if(strcmp(val, "test1")){
-    test1 = c(test1, calib_data$cpD1[i])
+    test1 = c(test1, calib_df$cpD1[i])
   }
   if(strcmp(val, "all_products")){
-    allP = c(allP, calib_data$cpD1[i])
+    allP = c(allP, calib_df$cpD1[i])
   }
 }
 # Bind test1 and allProd cpD1 values by starting quantity
-calib_data = cbind(startq, test1, allP)
+calib_data = as.data.frame(cbind(startq, test1, allP))
 # Format starting quantity values as decimals, not scientific notation
-calib_data[,1]=format(calib_data[,1], scientific=FALSE)
+#calib_data$startq=as.factor(format(calib_data$startq, scientific=FALSE))
+calib_data$startq=as.factor(calib_data$startq)
 
 ### COMPLETED CALIBRATED DATA FRAME ###
 
+########################################################## 
+##### Ordinal Logicistic Regression Calibrated Data ######
+##########################################################
+require(MASS)
+
+#ordinal logistic
+OLR = polr(startq~test1+allP,data = calib_data, Hess = TRUE)
+summary(OLR)
+(ctable <- coef(summary(OLR)))
 ########################################################## 
 ############ ADJUSTMENT MODEL Calibrated Data ############
 ########################################################## 
@@ -121,11 +131,7 @@ dev.off()
 scatter.smooth(ratio, adj_val)
 abline(ratio, adj_val)
 
-
-compare_data = cbind(adj_val, ratio)
-write.csv(file = "compare_dataJulia.csv", compare_data)
 ### COMPLETED ADJUSTMENT MODEL - CALIBRATED DATA ###
-
 ### EXPERIMENTAL DATA FRAME ###
 # Create/Write data frame for Calibrated values
 exp_df = deriv %>% filter(str_detect(sampleID, "g")==FALSE)
@@ -134,19 +140,31 @@ exp_df = exp_df[order(exp_df$starting_quantity),]
 # Remove first and last rows (unnecessary labeling)
 exp_df = exp_df[-1,]
 exp_df = exp_df[-nrow(exp_df),]
-write.csv(exp_df, file="2018_11_Experimental_Data_Frame.csv")
-# Create new transposed data set
-exp_data = read.csv(file="2018_11_Experimental_Data_Frame.csv", header=TRUE) 
-# Remove extra labeling column
-exp_data = exp_data[,-1]
+exp_df$sampleID = as.numeric(as.character(exp_df$sampleID))
+exp_df$cpD1 = as.numeric(as.character(exp_df$cpD1))
+exp_data = exp_df
 # Order data by sampleID
 exp_data = exp_data[order(exp_data$sampleID),]
-# expdata2 will be used to compare to the for-loop output, exp_data, to verify processed correctly
-expdata2=exp_data
+# Find counts of each unique sampleID; for sample with a count not equal to 2, remove from data frame
+# Send removed sampleID's to Dr. S, with additional plots of raw cycle values for each of these samples
+##### finding invalid observations #####
+counts = as.data.frame(table(exp_data$sampleID))
+countsne2 = as.data.frame(filter(counts, !counts$Freq==2))
+countsne2$Var1 = as.numeric(as.character(countsne2$Var1))
+#minus = which(!exp_data$sampleID)
 
-#REMOVE SAMPLES WITH MISSING ALLP/TEST1 VALUES; 
-#CONFIRM WITH DR.S IF SAMPLES WITH UNUSUAL CP VALUES SHOULD BE OMITTED
-exp_data=exp_data ##Finish this code to remove certain sampleID's -- PRIOR to for-loop
+minus = subset(exp_data, sampleID != couwntsne2$Var1)
+
+remove=match(exp_data$sampleID, countsne2$Var1)
+
+
+# Write CSV file of samples with count not equal to 2 to send to Dr. S for investigation
+### To work on --> add derivative values in to the CSV file
+#write.csv(file="2018_11_SamplesToInvestigate", countsne2)
+#write.csv(file="YEAR_MONTH_SamplesToInvestigate", countsne2)
+# Manually remove samples with only one reaction type (allP or test1)
+remove = countsne2$Var1
+exp_data = exp_data[!(exp_data$sampleID == remove)]
 
 # Create empty vectors for for-loop to input cpD1 values
 test1.exp = c()
