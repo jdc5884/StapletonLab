@@ -96,14 +96,16 @@ calib_data$startq=as.factor(calib_data$startq)
 ##########################################################
 library(MASS)
 
+calib_data$startq = ordered(calib_data$startq, levels = levels(calib_data$startq))
+calib_data$ratio = allP/test1
 #ordinal logistic
-OLR = polr(startq~test1+allP,data = calib_data, Hess = TRUE)
+OLR = polr(startq~ratio,data = calib_data, Hess = TRUE)
 summary(OLR)
 (ctable <- coef(summary(OLR)))
 
 #logistic
-glm.fit = glm(startq~test1+allP, data = calib_data, family = "binomial")
-summary(glm.fit)
+#glm.fit = glm(startq~test1+allP, data = calib_data, family = "binomial")
+#summary(glm.fit)
 ########################################################## 
 ############ ADJUSTMENT MODEL Calibrated Data ############
 ########################################################## 
@@ -136,7 +138,10 @@ scatter.smooth(ratio, adj_val)
 abline(ratio, adj_val)
 
 ### COMPLETED ADJUSTMENT MODEL - CALIBRATED DATA ###
-### EXPERIMENTAL DATA FRAME ###
+
+########################################################## 
+################ Experimental Data Frame #################
+########################################################## 
 # Create/Write data frame for Calibrated values
 exp_df = deriv %>% filter(str_detect(sampleID, "g")==FALSE)
 # Sort by starting quantity
@@ -147,18 +152,16 @@ exp_df = exp_df[-nrow(exp_df),]
 exp_df$sampleID = as.numeric(as.character(exp_df$sampleID))
 exp_df$cpD1 = as.numeric(as.character(exp_df$cpD1))
 exp_data = exp_df
-# Order data by sampleID
 exp_data = exp_data[order(exp_data$sampleID),]
+
+##### finding invalid observations #####
 # Find counts of each unique sampleID; for sample with a count not equal to 2, remove from data frame
 # Send removed sampleID's to Dr. S, with additional plots of raw cycle values for each of these samples
-##### finding invalid observations #####
 counts = as.data.frame(table(exp_data$sampleID))
 countsne2 = as.data.frame(filter(counts, !counts$Freq==2))
 countsne2$Var1 = as.numeric(as.character(countsne2$Var1))
 #minus = which(!exp_data$sampleID)
-
 minus = subset(exp_data, sampleID != couwntsne2$Var1)
-
 remove=match(exp_data$sampleID, countsne2$Var1)
 
 
@@ -190,6 +193,7 @@ for(i in 1:length(exp_data$sampleID)){
 }
 # Bind test1 and allProd cpD1 values by sample ID
 exp_data = cbind(sampleID.exp, test1.exp, allP.exp)
+exp_ratio = as.numeric(as.character(exp_data$allP.exp))/as.numeric(as.character(exp_data$test1.exp))
 # Write CSV file
 write.csv(exp_data, file="2018_11_Experimental_Data_Frame.csv")
 ### COMPLETED EXPERIMENTAL DATA FRAME ###
