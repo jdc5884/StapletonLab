@@ -1,0 +1,25 @@
+#Summary for March 22 - April 5
+
+Achievements:
+
+   Stress Splicing/vQTL Analysis:
+	-Discovered the possible extrapolation with our current qPCR model building process
+	-Rather than building a linear model based off of the Calibrated data to predict the 
+	 Experimental data ratios, we will use a ordinal logistic classification method to find
+	 the starting quantities for the Experimental data and take the adjustment accordingly then
+	-Drew and I have begun to implement this method into our analyses, we just need to fine tune
+	 and/or identify and issues with the model before proceding with the vQTL analysis
+	-I have drawn up the basic code for matching the SampleID numbers in the plate data to the 
+	 barcodes in the metadata analysis.
+	-Edited and further developed my snp matching code to be more robust for future datasets
+
+
+   Hyperspectral Imaging:
+	-Discussed with David how to fix my python and set up appropriate packages
+	-Worked with David on what my input on his project would be: code documentaiton
+
+Goals for the Next Two Weeks:
+	-Help/learn with Jessica how to use Read the Docs
+	-Help Jessica write up the Metadata file for her Family/Random project output
+	-Continue to colaborate with David on his project and find out how to code
+	 document in a formatted and efficient way
