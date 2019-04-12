@@ -1,0 +1,7 @@
+site_name: vQTLRandom and Family
+site_description: vQTL documentation
+repo_url: https://github.com/jdc5884/StapletonLab
+theme: readthedocs
+docs_dir: 'doc_files/docs'
+pages:
+- Home: intro.md
