@@ -5,7 +5,7 @@ library("vqtl")
 library("dplyr")
 library("stringr")
 #library(beepr)
-#setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
+setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing")
 #now with the breed dataset
 breed <-read.cross(file = "snpHeight.csv")
 #####small sample of snpHeight
