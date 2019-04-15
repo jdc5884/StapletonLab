@@ -4,5 +4,5 @@ repo_url: https://github.com/jdc5884/StapletonLab
 theme: readthedocs
 docs_dir: 'doc_files/docs'
 pages:
-- Home: index.md
-- vQTL: vQTL.md
+- Home: 'index.md'
+- vQTL: 'vQTL.md'
