@@ -5,3 +5,4 @@ theme: readthedocs
 docs_dir: 'doc_files/docs'
 pages:
 - Home: index.md
+- vQTL: vQTL.md
