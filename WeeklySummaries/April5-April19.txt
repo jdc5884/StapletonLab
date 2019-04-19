@@ -1,0 +1,26 @@
+#Summary for April 5 - April 19
+
+Achievements:
+
+	Read the Docs:
+		-Banks, Jessica, and I worked on creating a read the docs in the works
+		-The ground work for the read the doc is up there are issues with publishing
+		 the read the docs page
+
+	Hyperspectral Imaging:
+		-David went over making the code for the framing based off of components for
+		 the HSI data cube images. We are focusing on how to read the data in and categorize
+		 the pixels
+
+	qPCR/vQTL:
+		-Drew, Dr. Wang, and I further developed our plan for the adjustment model
+		-We are working on incorporating a percentile component into the ordinal logistic model
+		 for categorizing the starting quantites and predicting the starting quantities for the 
+		 experimental data
+
+Goals for the next two weeks:
+
+	-work on the combination ratios for the qPCR adjustment and the groundwork for the the percentile
+	 component of the OLRM
+	-troubleshoot issues with the read the docs page
+	-readinging the data for the HSI project
