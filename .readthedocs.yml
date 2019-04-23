@@ -1,0 +1,3 @@
+version: 1
+mkdocs:
+  configuration: mkdocs.yml
