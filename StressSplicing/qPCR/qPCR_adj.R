@@ -10,16 +10,16 @@ library(dplyr)
 # PC Directory
 #setwd("C:/Users/twili/Desktop/GIThub/StapletonLab/StressSplicing/qPCR")
 
-### READ IN DERIVATIVE DATA###
+### READ IN DERIVATIVE DATA ###
 # In the case of having two separate CSV files of calculated derivatives,
 # use this code to combine, prior to the following transpositions:
-deriv.1<-read.csv(file = "2018_11_1_plate_qPCR_output.csv", header=FALSE)
-deriv.2<-read.csv(file = "2018_11_2_plate_qPCR_output.csv", header=FALSE)
-deriv=cbind(deriv.1, deriv.2)
+#deriv.1<-read.csv(file = "2018_11_1_plate_qPCR_output.csv", header=FALSE)
+#deriv.2<-read.csv(file = "2018_11_2_plate_qPCR_output.csv", header=FALSE)
+#deriv=cbind(deriv.1, deriv.2)
 
 # In the case of having one CSV containing calculated derivatives, use this code:
 #deriv=read.csv(file = "(YEAR_MONTH_PLATE_qPCR_output.csv", header=FALSE)
-
+deriv=read.csv(file = "2018_06_01_plate_qPCR_output_2019_04_04.csv", header=FALSE)
 ########################################################## 
 ################### Initial Data Framing #################
 ########################################################## 
@@ -92,20 +92,56 @@ calib_data$startq=as.factor(calib_data$startq)
 ### COMPLETED CALIBRATED DATA FRAME ###
 
 ########################################################## 
-##### Ordinal Logicistic Regression Calibrated Data ######
-##########################################################
-library(MASS)
+################ Experimental Data Frame #################
+########################################################## 
+exp_df = deriv %>% filter(str_detect(sampleID, "g")==FALSE)
+# Sort by starting quantity
+exp_df = exp_df[order(exp_df$starting_quantity),]
+# Remove first and last rows (unnecessary labeling)
+exp_df = exp_df[-1,]
+exp_df = exp_df[-nrow(exp_df),]
+#exp_df$sampleID = as.numeric(as.character(exp_df$sampleID))
+exp_df$cpD1 = as.numeric(as.character(exp_df$cpD1))
+exp_data = exp_df
+# Order data by sampleID
+exp_data = exp_data[order(exp_data$sampleID),]
+### Finding invalid observations ###
+# Find counts of each unique sampleID; for sample with a count not equal to 2, remove from data frame
+counts = as.data.frame(table(exp_data$sampleID))
+countsne2 = as.data.frame(filter(counts, !counts$Freq==2))
+countsne2$Var1 = as.numeric(as.character(countsne2$Var1)) #---> CHECK IF THIS IS NECESSARY
+# Remove invalid observations from data set
+exp_data = exp_data[!exp_data$sampleID %in% countsne2$Var1,]
 
-calib_data$startq = ordered(calib_data$startq, levels = levels(calib_data$startq))
-calib_data$ratio = allP/test1
-#ordinal logistic
-OLR = polr(startq~ratio,data = calib_data, Hess = TRUE)
-summary(OLR)
-(ctable <- coef(summary(OLR)))
 
-#logistic
-#glm.fit = glm(startq~test1+allP, data = calib_data, family = "binomial")
-#summary(glm.fit)
+
+# Create empty vectors for for-loop to input cpD1 values
+test1.exp = c()
+allP.exp = c()
+sampleID.exp = c()
+# For loop -- iterating thru starting quantity and reaction type to return cpD1 values 
+for(i in 1:length(exp_data$sampleID)){
+  id.exp = toString(exp_data$sampleID[i])
+  if(i %% 2 == 1){
+    sampleID.exp = c(sampleID.exp, id.exp)
+  }
+  val = toString(exp_data$reaction_type[i])
+  if(strcmp(val, "test1")){
+    test1.exp = c(test1.exp, exp_data$cpD1[i])
+  }
+  if(strcmp(val, "all_products")){
+    allP.exp = c(allP.exp, exp_data$cpD1[i])
+  }
+}
+# Bind test1 and allProd cpD1 values by sample ID
+exp_data = data.frame(sampleID.exp, test1.exp, allP.exp, stringsAsFactors = FALSE)
+exp_ratio = as.numeric(exp_data$allP.exp)/as.numeric(exp_data$test1.exp)
+# Write CSV file
+write.csv(exp_data, file="2018_11_Experimental_Data_Frame.csv")
+### COMPLETED EXPERIMENTAL DATA FRAME ###
+
+
+
 ########################################################## 
 ############ ADJUSTMENT MODEL Calibrated Data ############
 ########################################################## 
@@ -140,63 +176,40 @@ abline(ratio, adj_val)
 ### COMPLETED ADJUSTMENT MODEL - CALIBRATED DATA ###
 
 ########################################################## 
-################ Experimental Data Frame #################
+################ Percentile Comparrison ##################
+##########################################################
+boxplot(exp_ratio)
+boxplot(exp_ratio,ratio)
+
+
+# test1<-rnorm(20,10,4);
+# allp<-rexp(30,1/10);
+# x<-c(15,20,10,8);
+# ### what value in sample 2 coressponds to 15 in sample 1?
+# zx1<-(x-mean(test1))/sd(test1)
+# ## zx1=(y-mean(allp))/sd(allp)
+# yexample<-zx1*sd(allp)+mean(allp)
+
+zratio = (ratio-mean(ratio))/sd(ratio)
+y = zratio*sd(exp_ratio)+mean(exp_ratio)
+
+
+
 ########################################################## 
-# Create/Write data frame for Calibrated values
-exp_df = deriv %>% filter(str_detect(sampleID, "g")==FALSE)
-# Sort by starting quantity
-exp_df = exp_df[order(exp_df$starting_quantity),]
-# Remove first and last rows (unnecessary labeling)
-exp_df = exp_df[-1,]
-exp_df = exp_df[-nrow(exp_df),]
-exp_df$sampleID = as.numeric(as.character(exp_df$sampleID))
-exp_df$cpD1 = as.numeric(as.character(exp_df$cpD1))
-exp_data = exp_df
-exp_data = exp_data[order(exp_data$sampleID),]
+##### Ordinal Logicistic Regression Calibrated Data ######
+##########################################################
+library(MASS)
 
-##### finding invalid observations #####
-# Find counts of each unique sampleID; for sample with a count not equal to 2, remove from data frame
-# Send removed sampleID's to Dr. S, with additional plots of raw cycle values for each of these samples
-counts = as.data.frame(table(exp_data$sampleID))
-countsne2 = as.data.frame(filter(counts, !counts$Freq==2))
-countsne2$Var1 = as.numeric(as.character(countsne2$Var1))
-#minus = which(!exp_data$sampleID)
-minus = subset(exp_data, sampleID != couwntsne2$Var1)
-remove=match(exp_data$sampleID, countsne2$Var1)
+calib_data$startq = ordered(calib_data$startq, levels = levels(calib_data$startq))
+calib_data$ratio = calib_data$allP/calib_data$test1
+#ordinal logistic
+OLR = polr(startq~ratio,data = calib_data, Hess = TRUE)
+summary(OLR)
+table <- coef(summary(OLR))
 
+#predicting the 
+prediction = predict(OLR, y)#, type = "p")
 
-# Write CSV file of samples with count not equal to 2 to send to Dr. S for investigation
-### To work on --> add derivative values in to the CSV file
-#write.csv(file="2018_11_SamplesToInvestigate", countsne2)
-#write.csv(file="YEAR_MONTH_SamplesToInvestigate", countsne2)
-# Manually remove samples with only one reaction type (allP or test1)
-remove = countsne2$Var1
-exp_data = exp_data[!(exp_data$sampleID == remove)]
-
-# Create empty vectors for for-loop to input cpD1 values
-test1.exp = c()
-allP.exp = c()
-sampleID.exp = c()
-# For loop -- iterating thru starting quantity and reaction type to return cpD1 values 
-for(i in 1:length(exp_data$sampleID)){
-  id.exp = toString(exp_data$sampleID[i])
-  if(i %% 2 == 1){
-    sampleID.exp = c(sampleID.exp, id.exp)
-  }
-  val = toString(exp_data$reaction_type[i])
-  if(strcmp(val, "test1")){
-    test1.exp = c(test1.exp, exp_data$cpD1[i])
-  }
-  if(strcmp(val, "all_products")){
-    allP.exp = c(allP.exp, exp_data$cpD1[i])
-  }
-}
-# Bind test1 and allProd cpD1 values by sample ID
-exp_data = cbind(sampleID.exp, test1.exp, allP.exp)
-exp_ratio = as.numeric(as.character(exp_data$allP.exp))/as.numeric(as.character(exp_data$test1.exp))
-# Write CSV file
-write.csv(exp_data, file="2018_11_Experimental_Data_Frame.csv")
-### COMPLETED EXPERIMENTAL DATA FRAME ###
 
 ### ADJUSTMENT MODEL - EXPERIMENTAL DATA ### 
 # Using the adjustment model on the expiremental data
