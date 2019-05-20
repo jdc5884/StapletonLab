@@ -1,8 +1,5 @@
 version: 2
-<<<<<<< HEAD
-=======
 
->>>>>>> 57ed19879a00da60645f831d6c77917dccf49d2e
 mkdocs:
   configuration: mkdocs.yml
 
