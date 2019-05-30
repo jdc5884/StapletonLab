@@ -8,5 +8,5 @@ pages:
 - vQTL: 'vQTL.md'
 - Family and Random: 'FamRand.md'
 - Workflow:
-	- 'Getting Started': 'workflow/getstart.md'
+    - 'Getting Started': 'workflow/getstart.md'
 
