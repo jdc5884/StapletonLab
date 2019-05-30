@@ -6,3 +6,7 @@ docs_dir: 'doc_files/docs'
 pages:
 - Home: 'index.md'
 - vQTL: 'vQTL.md'
+- Family and Random: 'FamRand.md'
+- Workflow:
+	- 'Getting Started': 'workflow/getstart.md'
+

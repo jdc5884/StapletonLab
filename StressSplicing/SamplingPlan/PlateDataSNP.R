@@ -88,7 +88,9 @@ addmarker <- function(full, plate){
 }
 
 vqtl_11 = addmarker(full_11)
-#write.csv(vqtl_11, file = "../2018_11/vqtlinput_11.csv" ,row.names = FALSE)
+#unnecessary columns for vQTL input, we only need: Stress, breedtype, genotype, barcode
+notneed = c(1:6,9:11,13,14,16:21)
+#write.csv(vqtl_11[,-notneed], file = "../2018_11/vqtlinput_11.csv" ,row.names = FALSE)
 vqtl_6 = addmarker(full_6)
 #write.csv(vqtl_11, file = "../2018_6/vqtlinput_6.csv" ,row.names = FALSE)
 vqtl_8 = addmarker(full_8)
