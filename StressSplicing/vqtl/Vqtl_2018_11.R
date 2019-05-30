@@ -15,6 +15,7 @@ Stress_11 <- drop.nullmarkers(Stress_11)
 ##### CORTY code #####
 Stress_11$pheno$BreedType = factor(Stress_11$pheno$BreedType)
 
+#Stress_11$pheno$DumBreed = ifelse(Stress_11$pheno$BreedType=="Inbred", 0, 1)
 # ggplot of Stress_11 type and height
 # library(tidyverse)
 # Stress_11$pheno %>%
@@ -23,7 +24,7 @@ Stress_11$pheno$BreedType = factor(Stress_11$pheno$BreedType)
 
 Stress_11 <- calc.genoprob(Stress_11)
 
-
+###### additive model #####
 # outv <- scanonevar(cross = Stress_11,
 #                    mean.formula = stress ~ BreedType + mean.QTL.add + mean.QTL.dom,
 #                    var.formula = ~ BreedType + var.QTL.add + var.QTL.dom,
@@ -34,6 +35,10 @@ Stress_11 <- calc.genoprob(Stress_11)
 # 
 # write.csv(outv$result, file = "AdditiveModelStress_11_Output.csv")
 
+
+##### interactive model ####
+
+# eliminate all '(' in the ID in the stress files #
 outv <- scanonevar(cross = Stress_11,
                    mean.formula = stress ~ BreedType * (mean.QTL.add + mean.QTL.dom),
                    var.formula = ~ BreedType * (var.QTL.add + var.QTL.dom),

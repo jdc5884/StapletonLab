@@ -70,11 +70,14 @@ plate_8 = read.csv(file = , header = TRUE)
 colnames(plate_11)[2] = "sampleID"
 full_8 = merge(plate_11, dat2, by = "sampleID")
 
+#create one big dataframe containing all plate months
+#full = rbind(full_11, full_6, full_8)
+
 #####Adding marker location and chromosome#####
 
 addmarker <- function(full, plate){
   aux = matrix(snpFull$incre_new, nrow= 1)
-  aux = rbind(aux,snpFull$Chromosome)
+  aux = rbind(snpFull$Chromosome, aux)
   zeros = dim(full)[2]-dim(aux)[2]
   fillnames = names(full)[1:zeros]
   other = as.data.frame(matrix(rep(0,2*zeros), nrow = 2)) #repeat the number of 0 as the number of variables
@@ -86,6 +89,13 @@ addmarker <- function(full, plate){
   return(dat3)
   
 }
+
+#make sure to delete extra 0's and also delete '('
+
+#all months data setup
+#vqtl_stress = addmarker(full)
+#notneed = c(1:6,9:11,13,14,16:21)
+#write.csv(vqtl_stress[,-notneed], file = "vqtl_stress_input.csv" ,row.names = FALSE)
 
 vqtl_11 = addmarker(full_11)
 #unnecessary columns for vQTL input, we only need: Stress, breedtype, genotype, barcode
