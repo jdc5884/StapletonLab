@@ -1,15 +1,11 @@
-# This is a test file 
-## This is a smaller title
-### This is an even smaller title
-** This is bold text **
-* This is italicized text *
-> block quote words words words words words words
-' this is a section of code '
---- horizontal rule
+# vQTL Family and Random Documentation
 
-this is the code for a link:
-[title](https://www.example.com)
+This repository will serve as a guide for the vQTL analysis of the family and random
+corn plotting structures. It is a comparison of neighbor genotype effects on locus detection.
 
-this is the code for an image:
-![alt text](image.jpg)
+## Contributors
+
+- Ann E. Stapleton: University of North Carolina Wilmington Department of Biology and Marine Biology
+
+## Purpose
 
