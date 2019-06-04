@@ -6,7 +6,7 @@ docs_dir: 'doc_files/docs'
 pages:
 - Home: 
     -'index.md'
-    - vQTL: 'vQTL.md'
+    - 'vQTL': 'vQTL.md'
 - Workflow:
     - 'Getting Started': 'workflow/getstart.md'
     - 'Running vQTL' : 'workflow/RunvQTL.md'
