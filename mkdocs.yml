@@ -4,9 +4,10 @@ repo_url: https://github.com/jdc5884/StapletonLab
 theme: readthedocs
 docs_dir: 'doc_files/docs'
 pages:
-- Home: 'index.md'
-- vQTL: 'vQTL.md'
-- Family and Random: 'FamRand.md'
+- Home: 
+    -'index.md'
+    - vQTL: 'vQTL.md'
 - Workflow:
     - 'Getting Started': 'workflow/getstart.md'
+    - 'Running vQTL' : 'workflow/RunvQTL.md'
 
