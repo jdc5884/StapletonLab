@@ -7,7 +7,6 @@ pages:
 - Home: 
     - 'Introduction': 'intro/index.md'
     - 'vQTL': 'intro/vQTL.md'
-- R/qtl Manual: 'qtl-manual.md'
 - Workflow:
     - 'Getting Started': 'workflow/getstart.md'
     - 'Running vQTL' : 'workflow/RunvQTL.md'
