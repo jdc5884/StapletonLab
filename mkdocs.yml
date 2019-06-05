@@ -5,8 +5,9 @@ theme: readthedocs
 docs_dir: 'doc_files/docs'
 pages:
 - Home: 
-    - 'Introduction': 'index.md'
-    - 'vQTL': 'vQTL.md'
+    - 'Introduction': 'intro/index.md'
+    - 'vQTL': 'intro/vQTL.md'
+- R/qtl Manual: 'qtl-manual.md'
 - Workflow:
     - 'Getting Started': 'workflow/getstart.md'
     - 'Running vQTL' : 'workflow/RunvQTL.md'
