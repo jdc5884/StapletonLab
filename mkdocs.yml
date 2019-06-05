@@ -5,7 +5,7 @@ theme: readthedocs
 docs_dir: 'doc_files/docs'
 pages:
 - Home: 
-    -'index.md'
+    - 'Introduction': 'index.md'
     - 'vQTL': 'vQTL.md'
 - Workflow:
     - 'Getting Started': 'workflow/getstart.md'
